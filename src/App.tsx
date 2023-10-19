@@ -1,11 +1,19 @@
+import Error from "./components/Error";
+import Loader from "./components/Loader";
+import Modal from "./components/Modal";
 import Product from "./components/Product";
-import { products } from "./data/products";
+import useProduct from "./hooks/product";
 
 function App() {
+  const { loading, error, products } = useProduct();
   return (
     <div className="container mx-auto max-w-2xl pt-5">
-      <Product product={products[0]} />
-      <Product product={products[1]} />
+      {loading && <Loader />}
+      {error && <Error error={error} />}
+      {products.map((product) => (
+        <Product product={product} key={product.id} />
+      ))}
+      <Modal />
     </div>
   );
 }
