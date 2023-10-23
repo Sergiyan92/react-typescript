@@ -9,19 +9,22 @@ import Modal from "../components/Modal";
 import CreateProduct from "../components/CreateProduct";
 
 const ProductsPage = () => {
-  const { loading, error, products, addProduct } = useProduct();
+  const { loading, error, products, addProduct, deleteProducts } = useProduct();
   const { modal, open, close } = useContext(ModalContext);
 
   const createHandler = (product: IProduct) => {
     close();
     addProduct(product);
   };
+  const deleteHandler = (id: number) => {
+    deleteProducts(id); // Виклик функції видалення продукту з вашого хука useProduct
+  };
   return (
     <div className="container mx-auto max-w-2xl pt-5">
       {loading && <Loader />}
       {error && <Error error={error} />}
       {products.map((product) => (
-        <Product product={product} key={product.id} />
+        <Product product={product} key={product.id} onDelete={deleteHandler} />
       ))}
       {modal && (
         <Modal title="Create new product" onClose={close}>
